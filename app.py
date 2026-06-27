@@ -4,31 +4,30 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key'
+app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
 
-# Настройки почты (лучше использовать переменные окружения, но для теста оставим здесь)
+# Настройки почты
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'sploispy@gmail.com'
-app.config['MAIL_PASSWORD'] = 'drunroobepjsqvcb'
+# Пароль берется из переменных окружения (вставь 16-значный код туда)
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 
 mail = Mail(app)
 
-# Настройки БД
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'users.db')
+# Подключение к облачной базе данных PostgreSQL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Модель пользователя
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
-# Создание таблиц
+# Создание таблиц в БД
 with app.app_context():
     db.create_all()
 
@@ -40,15 +39,9 @@ def index():
 def register():
     if request.method == 'POST':
         email = request.form.get('email')
-        # Проверяем, есть ли такой пользователь
         if User.query.filter_by(email=email).first():
             return "Этот email уже зарегистрирован!"
-        
-        new_user = User(
-            email=email,
-            username=request.form.get('username'),
-            password=request.form.get('password')
-        )
+        new_user = User(email=email, username=request.form.get('username'), password=request.form.get('password'))
         db.session.add(new_user)
         db.session.commit()
         return "Регистрация успешна! <a href='/login'>Войти</a>"
@@ -81,10 +74,13 @@ def forgot_password():
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
         if user:
-            msg = Message("Ваш пароль", sender=app.config['MAIL_USERNAME'], recipients=[user.email])
-            msg.body = f"Ваш пароль: {user.password}"
-            mail.send(msg)
-            return "Письмо отправлено!"
+            try:
+                msg = Message("Восстановление пароля", sender=app.config['MAIL_USERNAME'], recipients=[user.email])
+                msg.body = f"Ваш пароль от IT-Help: {user.password}"
+                mail.send(msg)
+                return "Письмо отправлено!"
+            except Exception as e:
+                return f"Ошибка отправки письма: {str(e)}"
         return "Email не найден."
     return '<form method="POST"><input name="email" required><button>Отправить пароль</button></form>'
 
