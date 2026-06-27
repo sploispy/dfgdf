@@ -3,3 +3,4 @@ Flask-SQLAlchemy
 Flask-Mail
 email_validator
 gunicorn
+psycopg2-binary
