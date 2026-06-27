@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Кабинет пользователя</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f4f7f6; margin: 0; display: flex; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; padding: 20px; }
+        .content { flex-grow: 1; padding: 40px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-out { color: #e74c3c; text-decoration: none; display: block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>IT-Help</h2>
+        <p>Привет, {{ username }}</p>
+        <a href="/logout" class="btn-out">Выйти</a>
+    </div>
+    <div class="content">
+        <div class="card">
+            <h1>Добро пожаловать в кабинет!</h1>
+            <p>Здесь вы можете отслеживать статус ваших услуг и оплачивать их в ₸.</p>
+        </div>
+    </div>
+</body>
+</html>

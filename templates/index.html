@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Help Pro | Профессиональная помощь</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #333; line-height: 1.6; }
+        
+        /* Шапка */
+        header { background: #fff; padding: 40px 20px; text-align: center; border-bottom: 1px solid #eee; }
+        header h1 { font-size: 2.5rem; color: #1a1a1a; margin-bottom: 10px; }
+        header p { color: #666; font-size: 1.2rem; }
+
+        /* Секция услуг */
+        .services-container { display: flex; gap: 20px; justify-content: center; padding: 60px 20px; flex-wrap: wrap; }
+        .card { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 300px; transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-10px); }
+        .card h3 { margin-bottom: 15px; color: #007bff; }
+        .price { font-size: 1.5rem; font-weight: bold; margin-top: 20px; display: block; }
+
+        /* Кнопка */
+        .cta-box { text-align: center; padding-bottom: 80px; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 20px 50px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.1rem; transition: background 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,123,255,0.3); }
+        .btn:hover { background: #0056b3; box-shadow: 0 8px 25px rgba(0,123,255,0.5); }
+        
+        .success-btn { background: #28a745; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Ваш IT-помощник в любую минуту</h1>
+    <p>Решаем технические проблемы и берем на себя регистрацию на любых сайтах</p>
+</header>
+
+<div class="services-container">
+    <div class="card">
+        <h3>Регистрация</h3>
+        <p>Быстрая и безопасная помощь с созданием аккаунтов на любых ресурсах.</p>
+        <span class="price">2000 тг</span>
+    </div>
+    <div class="card">
+        <h3>Настройка ПК</h3>
+        <p>Устранение ошибок, оптимизация системы и установка драйверов.</p>
+        <span class="price">2000 тг</span>
+    </div>
+    <div class="card">
+        <h3>Комплексный пакет</h3>
+        <p>Максимальная экономия: помощь по всем вопросам сразу.</p>
+        <span class="price">4000 тг</span>
+    </div>
+</div>
+
+<div class="cta-box">
+    {% if is_registered %}
+        <a href="/cabinet" class="btn success-btn">Перейти в личный кабинет</a>
+    {% else %}
+        <a href="/register" class="btn">Начать работу</a>
+    {% endif %}
+</div>
+
+</body>
+</html>
