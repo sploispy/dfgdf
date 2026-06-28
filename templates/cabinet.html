@@ -2,26 +2,69 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Кабинет пользователя</title>
+    <title>Личный кабинет</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f4f7f6; margin: 0; display: flex; }
-        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; padding: 20px; }
-        .content { flex-grow: 1; padding: 40px; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .btn-out { color: #e74c3c; text-decoration: none; display: block; margin-top: 20px; }
+        body { background-color: #f8f9fa; padding: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 10% auto; padding: 20px; width: 400px; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>IT-Help</h2>
-        <p>Привет, {{ username }}</p>
-        <a href="/logout" class="btn-out">Выйти</a>
+
+<div class="container text-center">
+    <h1>Привет, {{ username }}!</h1>
+    <p>Добро пожаловать в IT-HELP STUDIO.</p>
+    
+    <button class="btn btn-primary" onclick="document.getElementById('modal').style.display='block'">
+        Подать заявку на помощь
+    </button>
+    <br><br>
+    <a href="/logout" class="btn btn-danger">Выйти</a>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3>Оформление заявки</h3>
+        <form action="/submit-request" method="POST">
+            <label>Выберите проблему:</label>
+            <select name="problem" class="form-select mb-2">
+                <option>Регистрация на сайте</option>
+                <option>Помощь с компьютером</option>
+                <option>Другое</option>
+            </select>
+            
+            <label>Способ оплаты:</label>
+            <select name="payment_method" class="form-select mb-2" onchange="togglePayment(this.value)">
+                <option value="kaspi_number">Kaspi Gold (по номеру)</option>
+                <option value="card">Банковская карта</option>
+            </select>
+
+            <div id="kaspi_info">
+                <p>Переведите на Kaspi: <b>+7 778 693 25 74</b></p>
+                <p><small>После оплаты мы свяжемся с вами по номеру +7 778 676 6600</small></p>
+            </div>
+
+            <div id="card_info" style="display:none;">
+                <input class="form-control mb-1" placeholder="Номер карты">
+                <div class="d-flex">
+                    <input class="form-control me-1" placeholder="ММ/ГГ">
+                    <input class="form-control" placeholder="CVC">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-success w-100 mt-3">Оплатить и отправить</button>
+            <button type="button" class="btn btn-secondary w-100 mt-2" onclick="document.getElementById('modal').style.display='none'">Отмена</button>
+        </form>
     </div>
-    <div class="content">
-        <div class="card">
-            <h1>Добро пожаловать в кабинет!</h1>
-            <p>Здесь вы можете отслеживать статус ваших услуг и оплачивать их в ₸.</p>
-        </div>
-    </div>
+</div>
+
+<script>
+function togglePayment(val) {
+    document.getElementById('kaspi_info').style.display = val === 'kaspi_number' ? 'block' : 'none';
+    document.getElementById('card_info').style.display = val === 'card' ? 'block' : 'none';
+}
+</script>
+
 </body>
 </html>
