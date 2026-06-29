@@ -67,13 +67,15 @@ def submit_request():
     problem = request.form.get('problem')
     payment = request.form.get('payment_method')
     user_email = session.get('email', 'Гость')
+    
     try:
+        # Отправка заявки на почту
         msg = Message("Новая заявка IT-HELP", sender=app.config['MAIL_USERNAME'], recipients=['sploispy@gmail.com'])
-        msg.body = f"Пользователь: {user_email}\nПроблема: {problem}\nСпособ оплаты: {payment}\nКонтакты: +7 778 693 25 74 / +7 778 676 6600"
+        msg.body = f"Пользователь: {user_email}\nПроблема: {problem}\nСпособ оплаты: {payment}\nКонтакты для связи: +7 778 693 25 74 / +7 778 676 6600"
         mail.send(msg)
         return redirect(url_for('payment_wait'))
     except Exception as e:
-        return f"Ошибка отправки: {str(e)}"
+        return f"Ошибка при отправке: {str(e)}"
 
 @app.route('/payment-wait')
 def payment_wait():
