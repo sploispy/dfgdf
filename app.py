@@ -61,7 +61,8 @@ def login():
 def cabinet():
     if 'email' in session:
         user = User.query.filter_by(email=session['email']).first()
-        return f"Привет, {user.username}! Ты в кабинете. <a href='/logout'>Выйти</a>"
+        # Убедись, что здесь именно 'cabinet.html'
+        return render_template('cabinet.html', username=user.username)
     return redirect(url_for('login'))
 
 @app.route('/logout')
