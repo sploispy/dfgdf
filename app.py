@@ -64,6 +64,10 @@ def cabinet():
         # Убедись, что здесь именно 'cabinet.html'
         return render_template('cabinet.html', username=user.username)
     return redirect(url_for('login'))
+    
+    @app.route('/payment-wait')
+def payment_wait():
+    return render_template('wait.html')
 
 @app.route('/logout')
 def logout():
